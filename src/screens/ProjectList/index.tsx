@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { cleanObject, useDebounce } from "../../utils";
+import { cleanObject, useDebounce, useMount } from "../../utils";
 import { List } from "./List";
 import { SearchPanel } from "./SearchPanel";
 import * as qs from "qs";
@@ -43,10 +43,4 @@ export const ProjectList = () => {
       <List users={users} list={list}></List>
     </div>
   );
-};
-
-const useMount = (callback) => {
-  useEffect(() => {
-    callback();
-  }, []);
 };
