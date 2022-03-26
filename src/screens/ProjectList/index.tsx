@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 import { cleanObject, useDebounce, useMount } from "../../utils";
 import { List } from "./List";
 import { SearchPanel } from "./SearchPanel";
-import * as qs from "qs";
 import { useHttp } from "utils/http";
-
-const apiURL = process.env.REACT_APP_API_URL;
 
 export const ProjectList = () => {
   const [users, setUsers] = useState([]);
