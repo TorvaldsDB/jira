@@ -1,3 +1,4 @@
+import { useAuth } from "./../context/auth-context";
 import qs from "qs";
 import * as auth from "auth-provider";
 
@@ -10,7 +11,7 @@ interface Config extends RequestInit {
 
 export const http = async (
   endpoint: string,
-  { data, token, headers, ...customConfig }: Config
+  { data, token, headers, ...customConfig }: Config = {}
 ) => {
   const config = {
     method: "GET",
@@ -42,4 +43,12 @@ export const http = async (
         return Promise.reject(data);
       }
     });
+};
+
+// 函数中如果要使用hooks的话, 函数本身就必须是hooks
+export const useHttp = () => {
+  const { user } = useAuth();
+  // TS Utility Types
+  return (...[endpoint, config]: Parameters<typeof http>) =>
+    http(endpoint, { ...config, token: user?.token });
 };
