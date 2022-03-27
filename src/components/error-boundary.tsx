@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { Component } from "react";
 
 type FallbackRender = (props: { error: Error | null }) => React.ReactElement;
 // https://www.npmjs.com/package/react-error-boundary
