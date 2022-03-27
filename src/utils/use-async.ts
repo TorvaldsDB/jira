@@ -1,3 +1,4 @@
+import { config } from "process";
 import { useState } from "react";
 interface State<D> {
   stat: "idle" | "loading" | "error" | "success";
@@ -11,7 +12,15 @@ const defaultInitialState: State<null> = {
   error: null,
 };
 
-export const useAsync = <D>(initialState?: State<D>) => {
+const defaultConfig = {
+  throwOnError: false,
+};
+
+export const useAsync = <D>(
+  initialState?: State<D>,
+  initialConfig?: typeof defaultConfig
+) => {
+  const config = { ...defaultConfig, ...initialConfig };
   const [state, setState] = useState<State<D>>({
     ...defaultInitialState,
     ...initialState,
@@ -45,7 +54,11 @@ export const useAsync = <D>(initialState?: State<D>) => {
       })
       .catch((error) => {
         setError(error);
-        return error;
+        if (config.throwOnError) {
+          return Promise.reject(error);
+        } else {
+          return error;
+        }
       });
   };
   return {
