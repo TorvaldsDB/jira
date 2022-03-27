@@ -4,20 +4,20 @@ import { List } from "./List";
 import { SearchPanel } from "./SearchPanel";
 import styled from "@emotion/styled";
 import { useProject } from "utils/project";
-import { useUser } from "utils/user";
+import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "utils/url";
 import Project from "screens/Project";
+import { useProjectsSearchParams } from "./util";
 
 export const ProjectList = () => {
-  const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
-  const [param, setParam] = useUrlQueryParam(keys);
+  useDocumentTitle("项目列表", false);
+
+  const [param, setParam] = useProjectsSearchParams();
 
   const debounceParam = useDebounce(param);
 
   const { isLoading, data: list } = useProject(debounceParam);
-  const { data: users } = useUser();
-
-  useDocumentTitle("项目列表", false);
+  const { data: users } = useUsers();
 
   return (
     <Container>

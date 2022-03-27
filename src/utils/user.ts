@@ -4,7 +4,7 @@ import { User } from "screens/ProjectList/SearchPanel";
 import { useEffect } from "react";
 import { useHttp } from "utils/http";
 
-export const useUser = (param?: Partial<User>) => {
+export const useUsers = (param?: Partial<User>) => {
   const { run, ...result } = useAsync<User[]>();
 
   const client = useHttp();
