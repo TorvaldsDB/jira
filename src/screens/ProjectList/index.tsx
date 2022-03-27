@@ -3,6 +3,7 @@ import { cleanObject, useDebounce, useMount } from "../../utils";
 import { List } from "./List";
 import { SearchPanel } from "./SearchPanel";
 import { useHttp } from "utils/http";
+import styled from "@emotion/styled";
 
 export const ProjectList = () => {
   const [users, setUsers] = useState([]);
@@ -23,13 +24,18 @@ export const ProjectList = () => {
   });
 
   return (
-    <div>
+    <Container>
+      <h1>项目列表</h1>
       <SearchPanel
         users={users}
         param={param}
         setParam={setParam}
       ></SearchPanel>
       <List users={users} list={list}></List>
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding: 3.2rem;
+`;
