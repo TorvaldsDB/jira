@@ -5,7 +5,7 @@ import { Form, Input, Select } from "antd";
 import React from "react";
 
 export interface User {
-  id: number;
+  id: string;
   name: string;
   token: string;
 }
