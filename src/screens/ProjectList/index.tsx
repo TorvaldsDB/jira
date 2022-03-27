@@ -5,12 +5,12 @@ import { SearchPanel } from "./SearchPanel";
 import styled from "@emotion/styled";
 import { useProject } from "utils/project";
 import { useUser } from "utils/user";
+import { useUrlQueryParam } from "utils/url";
+import Project from "screens/Project";
 
 export const ProjectList = () => {
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+  const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
+  const [param, setParam] = useUrlQueryParam(keys);
 
   const debounceParam = useDebounce(param);
 
@@ -35,6 +35,8 @@ export const ProjectList = () => {
     </Container>
   );
 };
+
+ProjectList.whyDidYouRender = false;
 
 const Container = styled.div`
   padding: 3.2rem;

@@ -18,7 +18,7 @@ const TsReactTest = (props: Props) => {
         clear
       </button>
       {value.map((person: { name: string; age: number }, index: number) => (
-        <div style={{ color: "red" }}>
+        <div key={person.name} style={{ color: "red" }}>
           <span style={{ color: "red" }}>{index}</span>
           <span>{person.name}</span>
           <span>{person.age}</span>
