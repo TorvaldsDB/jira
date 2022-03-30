@@ -11,9 +11,7 @@ import { useProjectsSearchParams } from "./util";
 import { Button } from "antd";
 import { Row } from "components/lib";
 
-export const ProjectList = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+export const ProjectList = (props: { projectButton: JSX.Element }) => {
   useDocumentTitle("项目列表", false);
 
   const [param, setParam] = useProjectsSearchParams();
@@ -27,9 +25,7 @@ export const ProjectList = (props: {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => props.setProjectModalOpen(true)}>
-          创建项目
-        </Button>
+        {props.projectButton}
       </Row>
       {/* <Button onClick={retry}>retry</Button> */}
       <SearchPanel
@@ -38,7 +34,7 @@ export const ProjectList = (props: {
         setParam={setParam}
       ></SearchPanel>
       <List
-        setProjectModalOpen={props.setProjectModalOpen}
+        projectButton={props.projectButton}
         refresh={retry}
         loading={isLoading}
         users={users || []}
