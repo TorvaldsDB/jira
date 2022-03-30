@@ -3,26 +3,34 @@ import { useDebounce, useDocumentTitle } from "../../utils";
 import { List } from "./List";
 import { SearchPanel } from "./SearchPanel";
 import styled from "@emotion/styled";
-import { useProject } from "utils/project";
+import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "utils/url";
 import Project from "screens/Project";
 import { useProjectsSearchParams } from "./util";
 import { Button } from "antd";
+import { Row } from "components/lib";
 
-export const ProjectList = () => {
+export const ProjectList = (props: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   useDocumentTitle("项目列表", false);
 
   const [param, setParam] = useProjectsSearchParams();
 
   const debounceParam = useDebounce(param);
 
-  const { isLoading, data: list, retry } = useProject(debounceParam);
+  const { isLoading, data: list, retry } = useProjects(debounceParam);
   const { data: users } = useUsers();
 
   return (
     <Container>
-      <h1>项目列表</h1>
+      <Row between={true}>
+        <h1>项目列表</h1>
+        <Button onClick={() => props.setProjectModalOpen(true)}>
+          创建项目
+        </Button>
+      </Row>
       {/* <Button onClick={retry}>retry</Button> */}
       <SearchPanel
         users={users || []}
@@ -30,6 +38,7 @@ export const ProjectList = () => {
         setParam={setParam}
       ></SearchPanel>
       <List
+        setProjectModalOpen={props.setProjectModalOpen}
         refresh={retry}
         loading={isLoading}
         users={users || []}

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Row } from "components/lib";
+import { ButtonNoPadding, Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import { ProjectList } from "screens/ProjectList";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
@@ -8,56 +8,81 @@ import { Route, Routes } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import Project from "screens/Project";
 import { resetRoute } from "utils";
+import ProjectModal from "screens/ProjectList/project-modal";
+import { useState } from "react";
+import ProjectPopover from "components/project-popover";
 
 export const AuthenticatedApp = () => {
+  const [projectModalOpen, setProjectModalOpen] = useState<boolean>(true);
   return (
     <Container>
-      <PageHeader />
+      <PageHeader setProjectModalOpen={setProjectModalOpen} />
       <Main>
         <Router>
           <Routes>
-            <Route path="/projects" element={<ProjectList />}></Route>
+            <Route
+              path="/projects"
+              element={
+                <ProjectList setProjectModalOpen={setProjectModalOpen} />
+              }
+            ></Route>
             <Route path="/projects/:projectId/*" element={<Project />}></Route>
-            <Route index element={<ProjectList />} />
+            <Route
+              index
+              element={
+                <ProjectList setProjectModalOpen={setProjectModalOpen} />
+              }
+            />
           </Routes>
         </Router>
       </Main>
+      <ProjectModal
+        projectModalOpen={projectModalOpen}
+        onClose={() => setProjectModalOpen(false)}
+      />
     </Container>
   );
 };
 
-const PageHeader = () => {
-  const { logout, user } = useAuth();
+const PageHeader = (props: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <Button type="link" onClick={resetRoute}>
+        <ButtonNoPadding type="link" onClick={resetRoute}>
           <SoftwareLogo width={"18rem"} color={"rgb(38,132,255"} />
-        </Button>
-        <h2>项目</h2>
-        <h2>用户</h2>
+        </ButtonNoPadding>
+        <ProjectPopover setProjectModalOpen={props.setProjectModalOpen} />
+        <span>用户</span>
       </HeaderLeft>
       <HeaderRight>
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item key={"logout"}>
-                <Button type="link" onClick={logout}>
-                  登出
-                </Button>
-              </Menu.Item>
-            </Menu>
-          }
-        >
-          <Button type="link" onClick={(e) => e.preventDefault()}>
-            Hi, {user?.name}
-          </Button>
-        </Dropdown>
+        <User />
       </HeaderRight>
     </Header>
   );
 };
 
+const User = () => {
+  const { logout, user } = useAuth();
+  return (
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item key={"logout"}>
+            <Button type="link" onClick={logout}>
+              登出
+            </Button>
+          </Menu.Item>
+        </Menu>
+      }
+    >
+      <Button type="link" onClick={(e) => e.preventDefault()}>
+        Hi, {user?.name}
+      </Button>
+    </Dropdown>
+  );
+};
 const Header = styled(Row)`
   padding: 3.2rem;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);

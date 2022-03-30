@@ -4,7 +4,7 @@ import { useCallback, useEffect } from "react";
 import { Project } from "./../screens/ProjectList/List";
 import { useAsync } from "./use-async";
 
-export const useProject = (param?: Partial<Project>) => {
+export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
   const { run, ...result } = useAsync<Project[]>();
 

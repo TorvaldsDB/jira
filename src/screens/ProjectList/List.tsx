@@ -1,4 +1,5 @@
-import { Table, TableProps } from "antd";
+import { Dropdown, Menu, Table, TableProps } from "antd";
+import { ButtonNoPadding } from "components/lib";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import React from "react";
@@ -18,6 +19,7 @@ export interface Project {
 interface ListProps extends TableProps<Project> {
   users: User[];
   refresh?: () => void;
+  setProjectModalOpen: (isOpen: boolean) => void;
 }
 export const List = ({ users, refresh, ...props }: ListProps) => {
   const { mutate } = useEditProject();
@@ -67,6 +69,29 @@ export const List = ({ users, refresh, ...props }: ListProps) => {
                   ? dayjs(project.created).format("YYYY-MM-DD")
                   : "无"}
               </span>
+            );
+          },
+        },
+        {
+          title: "操作",
+          render(value, project) {
+            return (
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item key={"edit"}>
+                      <ButtonNoPadding
+                        type="link"
+                        onClick={() => props.setProjectModalOpen(true)}
+                      >
+                        编辑
+                      </ButtonNoPadding>
+                    </Menu.Item>
+                  </Menu>
+                }
+              >
+                <ButtonNoPadding type="link">...</ButtonNoPadding>
+              </Dropdown>
             );
           },
         },
