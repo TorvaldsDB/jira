@@ -1,7 +1,7 @@
+import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useUrlQueryParam } from "utils/url";
-import { useCallback, useMemo, useState } from "react";
 import { useProject } from "utils/project";
+import { useUrlQueryParam } from "utils/url";
 export const useProjectsSearchParams = () => {
   const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
   const [param, setParam] = useUrlQueryParam(keys);
@@ -15,6 +15,12 @@ export const useProjectsSearchParams = () => {
     ),
     setParam,
   ] as const;
+};
+
+export const useProjectsQueryKey = () => {
+  const [params] = useProjectsSearchParams();
+
+  return ["projects", params];
 };
 
 export const useProjectModal = () => {
