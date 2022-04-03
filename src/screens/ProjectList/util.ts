@@ -1,5 +1,5 @@
 import { useUrlQueryParam } from "utils/url";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 export const useProjectsSearchParams = () => {
   const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
   const [param, setParam] = useUrlQueryParam(keys);
@@ -13,4 +13,25 @@ export const useProjectsSearchParams = () => {
     ),
     setParam,
   ] as const;
+};
+
+export const useProjectModal = () => {
+  const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
+    "projectCreate",
+  ]);
+
+  const open = useCallback(
+    () => setProjectCreate({ projectCreate: true }),
+    [setProjectCreate]
+  );
+  const close = useCallback(
+    () => setProjectCreate({ projectCreate: undefined }),
+    [setProjectCreate]
+  );
+
+  return {
+    projectModalOpen: projectCreate === "true",
+    open,
+    close,
+  };
 };

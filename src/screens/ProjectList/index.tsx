@@ -1,17 +1,13 @@
-import React, { useState } from "react";
 import { useDebounce, useDocumentTitle } from "../../utils";
 import { List } from "./List";
 import { SearchPanel } from "./SearchPanel";
 import styled from "@emotion/styled";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
-import { useUrlQueryParam } from "utils/url";
-import Project from "screens/Project";
-import { useProjectsSearchParams } from "./util";
-import { Button } from "antd";
-import { Row } from "components/lib";
+import { useProjectModal, useProjectsSearchParams } from "./util";
+import { ButtonNoPadding, Row } from "components/lib";
 
-export const ProjectList = (props: { projectButton: JSX.Element }) => {
+export const ProjectList = () => {
   useDocumentTitle("项目列表", false);
 
   const [param, setParam] = useProjectsSearchParams();
@@ -20,12 +16,15 @@ export const ProjectList = (props: { projectButton: JSX.Element }) => {
 
   const { isLoading, data: list, retry } = useProjects(debounceParam);
   const { data: users } = useUsers();
+  const { open } = useProjectModal();
 
   return (
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        {props.projectButton}
+        <ButtonNoPadding type="link" onClick={open}>
+          创建项目
+        </ButtonNoPadding>
       </Row>
       {/* <Button onClick={retry}>retry</Button> */}
       <SearchPanel
@@ -34,7 +33,6 @@ export const ProjectList = (props: { projectButton: JSX.Element }) => {
         setParam={setParam}
       ></SearchPanel>
       <List
-        projectButton={props.projectButton}
         refresh={retry}
         loading={isLoading}
         users={users || []}
