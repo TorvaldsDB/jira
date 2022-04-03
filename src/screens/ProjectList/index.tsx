@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectsSearchParams } from "./util";
-import { ButtonNoPadding, Row } from "components/lib";
+import { ButtonNoPadding, ErrorBox, Row } from "components/lib";
 import { useDispatch } from "react-redux";
 import { projectListActions } from "./project-list.slice";
 
@@ -17,7 +17,7 @@ export const ProjectList = () => {
 
   const debounceParam = useDebounce(param);
 
-  const { isLoading, data: list, retry } = useProjects(debounceParam);
+  const { isLoading, data: list, error } = useProjects(debounceParam);
   const { data: users } = useUsers();
 
   return (
@@ -37,8 +37,8 @@ export const ProjectList = () => {
         param={param}
         setParam={setParam}
       ></SearchPanel>
+      <ErrorBox error={error} />
       <List
-        refresh={retry}
         loading={isLoading}
         users={users || []}
         dataSource={list || []}
