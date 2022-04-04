@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Button, Divider, List, Popover, Typography } from "antd";
+import { Divider, List, Popover, Typography } from "antd";
 import React from "react";
 import { useProjectModal } from "screens/ProjectList/util";
 import { useProjects } from "utils/project";

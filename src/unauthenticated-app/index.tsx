@@ -53,7 +53,7 @@ export const LongButton = styled(Button)`
 `;
 
 const Title = styled.h2`
-  maigin-bottom: 2.4rem;
+  margin-bottom: 2.4rem;
   color: rgb(94, 108, 132);
 `;
 
